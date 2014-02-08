@@ -74,6 +74,13 @@ public class Pipeline
       return true;
    }
 
+   /**
+    * Returns true if the producer generates all the annotations, in the
+    * correct format, required by the consumer. Returns false otherwise.
+    * @param producer
+    * @param consumer
+    * @return
+    */
    protected boolean satisfies(WebService producer, WebService consumer)
    {
       long[] produces = producer.produces();
