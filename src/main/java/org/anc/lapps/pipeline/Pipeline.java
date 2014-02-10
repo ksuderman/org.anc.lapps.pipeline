@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.lappsgrid.core.DataFactory;
 import org.slf4j.*;
 
 import org.lappsgrid.api.Data;
@@ -39,7 +40,21 @@ public class Pipeline
 
    public Data execute(Data data)
    {
+      return execute(data, true);
+   }
+
+   public Data execute(Data data, boolean validateFirst)
+   {
       logger.info("Running pipeline.");
+      if (validateFirst)
+      {
+         logger.debug("Validating the pipeline");
+         if (!validate())
+         {
+            logger.warn("Pipeline failed validation.");
+            return DataFactory.error("Pipeline failed validation.");
+         }
+      }
       for (WebService service : pipeline)
       {
          data = service.execute(data);
