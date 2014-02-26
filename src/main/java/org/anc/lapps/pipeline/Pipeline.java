@@ -40,7 +40,7 @@ public class Pipeline
 
    public Data execute(Data data)
    {
-      return execute(data, true);
+      return execute(data, false);
    }
 
    public Data execute(Data data, boolean validateFirst)
@@ -110,6 +110,7 @@ public class Pipeline
       return true;
    }
 
+   
    protected boolean satisfies(long required, long[] candidates)
    {
       for (long candidate : candidates)
