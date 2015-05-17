@@ -6,41 +6,41 @@
     <parent>
         <groupId>org.lappsgrid.maven</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.2</version>
     </parent>
     <groupId>org.anc.lapps</groupId>
     <artifactId>pipeline</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <name>LAPPS Pipeline</name>
     <description>A simple pipeline for create LAPPS applications.</description>
     <properties>
-        <lapps.version>1.0.1</lapps.version>
+        <lapps.api.version>1.0.1</lapps.api.version>
+        <lapps.core.version>1.1.0</lapps.core.version>
+        <lapps.discriminator.version>1.2.3</lapps.discriminator.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>api</artifactId>
-            <version>${lapps.version}</version>
+            <version>${lapps.api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>core</artifactId>
-            <version>${lapps.version}</version>
+            <version>${lapps.core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>discriminator</artifactId>
-            <version>1.2.1</version>
+            <version>${lapps.discriminator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.2</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.0.11</version>
         </dependency>
     </dependencies>
 
