@@ -1,16 +1,17 @@
 package org.anc.lapps.pipeline;
 
+import org.lappsgrid.api.WebService;
+import org.lappsgrid.core.DataFactory;
+import org.lappsgrid.metadata.IOSpecification;
+import org.lappsgrid.metadata.ServiceMetadata;
+import org.lappsgrid.serialization.Serializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import org.lappsgrid.core.DataFactory;
-import org.slf4j.*;
-
-import org.lappsgrid.api.Data;
-import org.lappsgrid.api.WebService;
-import org.lappsgrid.discriminator.*;
 
 public class Pipeline
 {
@@ -38,12 +39,12 @@ public class Pipeline
       pipeline.add(service);
    }
 
-   public Data execute(Data data)
+   public String execute(String data)
    {
-      return execute(data, true);
+      return execute(data, false);
    }
 
-   public Data execute(Data data, boolean validateFirst)
+   public String execute(String data, boolean validateFirst)
    {
       logger.info("Running pipeline.");
       if (validateFirst)
@@ -58,10 +59,6 @@ public class Pipeline
       for (WebService service : pipeline)
       {
          data = service.execute(data);
-         if (data.getDiscriminator() == Types.ERROR)
-         {
-            return data;
-         }
       }
       return data;
    }
@@ -98,27 +95,18 @@ public class Pipeline
     */
    protected boolean satisfies(WebService producer, WebService consumer)
    {
-      long[] produces = producer.produces();
-      long[] requires = consumer.requires();
-      for (long required : requires)
-      {
-         if (!satisfies(required, produces))
-         {
-            return false;
-         }
-      }
-      return true;
+      ServiceMetadata producerMetadata = getMetadata(producer);
+		ServiceMetadata consumerMetadata = getMetadata(consumer);
+		IOSpecification produced = producerMetadata.getProduces();
+		IOSpecification required = consumerMetadata.getRequires();
+
+		return produced.satisfies(required);
    }
 
-   protected boolean satisfies(long required, long[] candidates)
-   {
-      for (long candidate : candidates)
-      {
-         if (DiscriminatorRegistry.isa(candidate, required))
-         {
-            return true;
-         }
-      }
-      return false;
-   }
+	protected ServiceMetadata getMetadata(WebService service)
+	{
+		DataMetadata data = Serializer.parse(service.getMetadata(), DataMetadata.class);
+		return data.getPayload();
+	}
+   
 }
