@@ -2,6 +2,7 @@ package org.anc.grid.pipeline;
 
 import org.anc.lapps.pipeline.Pipeline;
 import org.junit.Test;
+import static org.lappsgrid.discriminator.Discriminators.Uri;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -43,45 +44,36 @@ public class PipeListTest2
 class ServiceOne extends AbstractService
 {
    @Override
-   public long[] requires()
-   {
-      return new long[] { 0 };
-   }
-
-   @Override
-   public long[] produces()
-   {
-      return new long[] { 1 };
-   }
+   public String getMetadata()
+	{
+		return new MetadataBuilder()
+				  .require(Uri.TOKEN)
+				  .produce(Uri.SENTENCE)
+				  .build();
+	}
 }
 
 class ServiceTwo extends AbstractService
 {
-   @Override
-   public long[] requires()
-   {
-      return new long[] { 1 };
-   }
-
-   @Override
-   public long[] produces()
-   {
-      return new long[] { 2 };
-   }
+	@Override
+	public String getMetadata()
+	{
+		return new MetadataBuilder()
+				  .require(Uri.SENTENCE)
+				  .produce(Uri.POS)
+				  .build();
+	}
 }
 
 class ServiceThree extends AbstractService
 {
-   @Override
-   public long[] requires()
-   {
-      return new long[] { 2 };
-   }
-
-   @Override
-   public long[] produces()
-   {
-      return new long[] { 3 };
-   }
+	@Override
+	public String getMetadata()
+	{
+		return new MetadataBuilder()
+				  .require(Uri.POS)
+				  .produce(Uri.NE)
+				  .build();
+	}
 }
 
